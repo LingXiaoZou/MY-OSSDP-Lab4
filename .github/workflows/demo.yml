@@ -28,6 +28,6 @@ jobs:
           # 设置上游仓库
           # git remote add upstream https://github.com/LingXiaoZou/MY-OSSDP-Lab4.git
           # git fetch upstream
-          git checkout -b develop origin/develop
+          git checkout -b master origin/master
           git merge --no-edit origin/master
           git push origin develop
