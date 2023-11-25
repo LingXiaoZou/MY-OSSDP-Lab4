@@ -19,15 +19,15 @@ jobs:
       - name: Run tests with Maven
         run: mvn -B test --file pom.xml
 
-      - uses: actions/checkout@v2
-      - name: Merge origin master
-        run: |
-          git config --global user.name 'zlx'
-          git config --global user.email '505925146@qq.com'
-          git pull --unshallow
-          # 设置上游仓库
-          # git remote add upstream https://github.com/LingXiaoZou/MY-OSSDP-Lab4.git
-          # git fetch upstream
-          git checkout master origin/master
-          git merge --no-edit origin/test
-          git push origin develop
+#      - uses: actions/checkout@v2
+#      - name: Merge origin master
+#        run: |
+#          git config --global user.name 'zlx'
+#          git config --global user.email '505925146@qq.com'
+#          git pull --unshallow
+#          # 设置上游仓库
+#          # git remote add upstream https://github.com/LingXiaoZou/MY-OSSDP-Lab4.git
+#          # git fetch upstream
+#          git checkout master origin/master
+#          git merge --no-edit origin/test
+#          git push origin develop
