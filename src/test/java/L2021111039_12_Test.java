@@ -15,7 +15,7 @@ public class L2021111039_12_Test {
         //均为正数
         String num1 = "123";
         String num2 = "456";
-        assertEquals("56088",s.multiply(num1,num2));
+        assertEquals("1111156088",s.multiply(num1,num2));
         //0与正数
         String num3 = "0";
         assertEquals("0",s.multiply(num1,num3));
