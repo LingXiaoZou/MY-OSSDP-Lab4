@@ -19,14 +19,15 @@ jobs:
       - name: Run tests with Maven
         run: mvn -B test --file pom.xml
 
-      - name: Auto merge on success
-        if: success()
-        uses: octokit/request-action@v2.x
-        run:
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-          git checkout "${{ github.event.pull_request.base.ref }}"
-          git pull --ff-only origin "${{ github.event.pull_request.base.ref }}"
-          git merge --ff-only "${{ github.event.pull_request.head.sha }}"
-          git push origin "${{ github.event.pull_request.base.ref }}"
+      - uses: actions/checkout@v2
+      - name: Merge origin master
+        run: |
+          git config --global user.name 'zlx'
+          git config --global user.email '505925146@qq.com'
+          git pull --unshallow
+          # 设置上游仓库
+          # git remote add upstream https://github.com/LingXiaoZou/MY-OSSDP-Lab4.git
+          # git fetch upstream
+          git checkout -b develop origin/develop
+          git merge --no-edit origin/master
+          git push origin develop
