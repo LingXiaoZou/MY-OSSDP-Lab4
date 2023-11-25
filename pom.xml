@@ -5,8 +5,12 @@
   <artifactId>OSSDP-Lab4</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>OSSDP-Lab4 Maven Webapp</name>
+  <name>OSSDP-Lab4 Maven</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <java.version>11</java.version>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
