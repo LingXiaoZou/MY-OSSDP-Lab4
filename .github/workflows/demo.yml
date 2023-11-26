@@ -16,12 +16,12 @@ jobs:
         if: success()
         run: |
           const github = require('@actions/github');
-          const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+          const octokit = new github.getOctokit(process.env.GITHUB_TOKEN);
           
           const context = github.context;
           const { owner, repo, number } = context.issue;
 
-          octokit.pulls.merge({
+          await octokit.pulls.merge({
             owner,
             repo,
             pull_number: number,
