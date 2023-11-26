@@ -12,12 +12,11 @@ jobs:
           java-version: 11
       - name: Cache Maven packages
         uses: actions/cache@v2
+      - name: Merge pull request (if tests pass)
+        if: success()
+        uses: pullreminders/merge-action@v2
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Run tests with Maven
-        run: mvn -B test --file pom.xml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
 #      - uses: actions/checkout@v2
 #      - name: Merge origin master
