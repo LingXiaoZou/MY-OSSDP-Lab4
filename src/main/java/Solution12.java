@@ -16,6 +16,7 @@
 
 class Solution12 {//修改：修改类名通文件名一致
     public String multiply(String num1, String num2) {
+        System.out.println("");
         if (num1.equals("0") | num2.equals("0")) {
             return "0";
         }
