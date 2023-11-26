@@ -14,19 +14,20 @@ jobs:
         uses: actions/cache@v2
       - name: Merge pull request (if tests pass)
         if: success()
-        uses: pullreminders/merge-action@v2
+      - name: Merge pull request (if tests pass)
+        if: success()
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const github = require('@actions/github');
+            const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+            
+            const context = github.context;
+            const { owner, repo, number } = context.issue;
 
-#      - uses: actions/checkout@v2
-#      - name: Merge origin master
-#        run: |
-#          git config --global user.name 'zlx'
-#          git config --global user.email '505925146@qq.com'
-#          git pull --unshallow
-#          # 设置上游仓库
-#          # git remote add upstream https://github.com/LingXiaoZou/MY-OSSDP-Lab4.git
-#          # git fetch upstream
-#          git checkout master origin/master
-#          git merge --no-edit origin/test
-#          git push origin develop
+            octokit.pulls.merge({
+              owner,
+              repo,
+              pull_number: number,
+              commit_title: 'Automatically Merged',
+            });
