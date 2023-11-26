@@ -14,14 +14,14 @@ jobs:
         uses: actions/cache@v2
       - name: Merge pull request (if tests pass)
         if: success()
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo, number } = context.issue;
-            github.pulls.merge({
-              owner,
-              repo,
-              pull_number: number,
-              commit_title: 'Automatically Merged',
-            });
+        run: |
+          token=$GITHUB_TOKEN
+          owner=$(jq -r .repository.owner <<< "$GITHUB_CONTEXT")
+          repo=$(jq -r .repository.repo <<< "$GITHUB_CONTEXT")
+          pull_number=$(jq -r .pull_request.number <<< "$GITHUB_CONTEXT")
+
+          curl -X PUT \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $token" \
+            -d '{"commit_title": "Automatically Merged"}' \
+            "https://api.github.com/repos/$owner/$repo/pulls/$pull_number/merge"
