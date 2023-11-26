@@ -14,20 +14,16 @@ jobs:
         uses: actions/cache@v2
       - name: Merge pull request (if tests pass)
         if: success()
-      - name: Merge pull request (if tests pass)
-        if: success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const github = require('@actions/github');
-            const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
-            
-            const context = github.context;
-            const { owner, repo, number } = context.issue;
+        run: |
+          const github = require('@actions/github');
+          const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+          
+          const context = github.context;
+          const { owner, repo, number } = context.issue;
 
-            octokit.pulls.merge({
-              owner,
-              repo,
-              pull_number: number,
-              commit_title: 'Automatically Merged',
-            });
+          octokit.pulls.merge({
+            owner,
+            repo,
+            pull_number: number,
+            commit_title: 'Automatically Merged',
+          });
