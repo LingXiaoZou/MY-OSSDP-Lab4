@@ -21,7 +21,6 @@ class Solution12 {//修改：修改类名通文件名一致
         }
         String ans = "0";//修改：增加分号
         //
-        //
         int m = num1.length(), n = num2.length();
         for (int i = n - 1; i >= 0; i--) {
             StringBuffer curr = new StringBuffer();
