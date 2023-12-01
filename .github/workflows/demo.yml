@@ -1,5 +1,23 @@
-name: tests
-on: push
+# Use GitHub Actions to automatically merge pull requests
+name: automerge
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
 jobs:
   run_tests:
     runs-on: ubuntu-latest
@@ -12,16 +30,22 @@ jobs:
           java-version: 11
       - name: Cache Maven packages
         uses: actions/cache@v2
-      - name: Merge pull request (if tests pass)
-        if: success()
-        run: |
-          token=$GITHUB_TOKEN
-          owner=$(jq -r .repository.owner <<< "$GITHUB_CONTEXT")
-          repo=$(jq -r .repository.repo <<< "$GITHUB_CONTEXT")
-          pull_number=$(jq -r .pull_request.number <<< "$GITHUB_CONTEXT")
-
-          curl -X PUT \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token $token" \
-            -d '{"commit_title": "Automatically Merged"}' \
-            "https://api.github.com/repos/$owner/$repo/pulls/$pull_number/merge"
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Run tests with Maven
+        run: mvn -B test --file pom.xml
+  automerge:
+    runs-on: ubuntu-latest
+    needs:
+      - run_tests
+    permissions:
+      contents: write
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
